@@ -3,7 +3,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import styled from '@emotion/styled';
-
+import InfoDrawer from "../../drawer/Drawer"
 
 const MenuOption = styled(MenuItem)`
     font-size: 14px
@@ -13,6 +13,9 @@ const MenuOption = styled(MenuItem)`
 
 const HeaderMenu = () => {
     const [open, setOpen] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
+
+
 
     const handleClick = (event) => {
         setOpen(event.currentTarget);
@@ -21,6 +24,11 @@ const HeaderMenu = () => {
     const handleClose = () => {
         setOpen(null);
     };
+
+    const toggleDrawer = () => {
+      setOpenDrawer(true);
+  }
+
   return (
     <>
     <MoreVertIcon  onClick={handleClick}/>
@@ -39,10 +47,15 @@ const HeaderMenu = () => {
             horizontal: 'right',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuOption onClick={() => { handleClose(); toggleDrawer()}} >Profile</MenuOption>
+        <MenuOption onClick={handleClose}>My account</MenuOption>
+        <MenuOption onClick={handleClose}>Logout</MenuOption>
+
+
+
       </Menu>
+
+      <InfoDrawer open={openDrawer} setOpen={setOpenDrawer} profile={true} />
     </>
   )
 }
