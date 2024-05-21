@@ -1,6 +1,9 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import {Box , Typography , styled} from "@mui/material"
-const Conversation = ({user}) => {
+
+
+import {AccountContext } from "../../../context/AccountProvider"
+import {setConversation} from "../../../service/api"
 
 
 const Component = styled('Box')`
@@ -20,10 +23,18 @@ const Image = styled('img')`
   object-fit:cover;
 
 `
+const Conversation = ({user}) => {
 
+const { setPerson , account} = useContext(AccountContext)
+
+
+const getUser =  async()=>{
+    setPerson(user)
+    await setConversation({senderId:account.sub , receiverId : user.sub})
+}
 
   return (
-    <Component>
+    <Component onClick = {()=>getUser()}>
         <Box>
             <Image src={user.picture} alt="dp"/>
         </Box>

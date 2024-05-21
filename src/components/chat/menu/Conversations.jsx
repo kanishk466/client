@@ -5,19 +5,21 @@ import {Box , styled , Divider} from "@mui/material"
 import Conversation from './Conversation.jsx'
 import {AccountContext} from "../../../context/AccountProvider.jsx"
 
+const Component = styled('Box')`
+height:81vh;
+overflox:overlay;
 
-const Conversations = () => {
+`
 
-  const Component = styled('Box')`
-  height:81vh;
-  overflox:overlay;
-  
-  `
+const StyledDivider = styled('Divider')`
+margin-left: 113px;
 
-  const Divider = styled('Divider')`
-  margin-left: 113px;
-  
-  `
+`
+
+
+const Conversations = ({text}) => {
+
+ 
 
 const[users,setUsers] = useState([]);
 
@@ -25,27 +27,27 @@ const {account} = useContext(AccountContext)
   useEffect(()=>{
     const fetchData = async () =>{
       let response = await   getUsers();
-      setUsers(response);
+      const filterData = response.filter(user => user.name.toLowerCase().includes(text.toLowerCase()));
+      setUsers(filterData);
     }
     fetchData();
-  },[])
+  },[text])
 
   
   return (
     <Component>
-      {
-        users.map(user =>(
-          user.sub !== account.sub &&
-            <>
-          
-           <Conversation user={user}/>
-           <Divider/>
-          
-            </>
-         
+    {
+        users && users.map((user, index) => (
+            user.sub !== account.sub && 
+                <>
+                    <Conversation user={user} />
+                    {
+                        users.length !== (index + 1)  && <StyledDivider />
+                    }
+                </>
         ))
-      }
-    </Component>
+    }
+</Component>
   )
 }
 
